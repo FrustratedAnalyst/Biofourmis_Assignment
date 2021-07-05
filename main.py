@@ -8,7 +8,7 @@ user_name = input_data.USER_NAME
 
 start_time = input_data.start_time
 
-fifteen_minute = start_time +(15*60)
+fifteen_minute = start_time +(15*60)-1
 
 max_hr = 0
 min_hr = 45 #i have taken min_hr is 45 otherwise if i take it as 0 then the if condition will not satisfy at all at any time
@@ -37,18 +37,18 @@ for data in input_data.data_generation():
     
     # print(data)
     
-    if data[input_data.USER_NAME]['timestamp'] >= fifteen_minute:
-        start_time = data[input_data.USER_NAME]['timestamp']
-        fifteen_minute = data[input_data.USER_NAME]['timestamp'] + (15*60)
+    if hr_count > 900:
+        start_time = start_time + (15*60)
+        fifteen_minute = start_time + (15*60)-1
 
-        max_hr = 0
-        min_hr = 45 
-        total_hr_count = 0
+        max_hr = data[input_data.USER_NAME]['heart_beat']
+        min_hr = data[input_data.USER_NAME]['heart_beat'] 
+        total_hr_count = data[input_data.USER_NAME]['heart_beat']
         hr_count = 0
         resp_rate_count = 0
-        total_resp_rate = 0
-        avg_hr = 0
-        avg_rr = 0
+        total_resp_rate = data[input_data.USER_NAME]['resp_rate']
+        avg_hr = data[input_data.USER_NAME]['heart_beat']
+        avg_rr = data[input_data.USER_NAME]['resp_rate']
 
         new_data = [ user_name ,start_time , fifteen_minute , avg_hr , min_hr , max_hr , avg_rr]
         df.loc[len(df.index)] = new_data
@@ -129,7 +129,6 @@ for i in range(len(data[1:])):
 hourly_df.to_csv('hourly.csv' , index=False)
 
 print(hourly_df)
-
 
 
         
