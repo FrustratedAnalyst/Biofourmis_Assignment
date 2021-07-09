@@ -12,6 +12,7 @@ class DataGen():
         
         self.start_time = self.timestamp
         
+        self.raw_data = []
 
     def data_generation(self):
 
@@ -21,7 +22,8 @@ class DataGen():
 
         #this below line will make the file clean again then again we can insert new data when we start simulating for new 2hour segment
         with open('RawInputData.json' , 'w') as file:
-            json.dump([] , file , indent=4) 
+            json.dump([] , file , indent=4)
+
 
         while self.timestamp < end_time:
 
@@ -45,13 +47,15 @@ class DataGen():
             #json.dump(data_dict , file , indent=4)
 
 
-            with open('RawInputData.json' , 'r') as file:
-                json_file = json.load(file)
+            # with open('RawInputData.json' , 'r') as file:
+            #     json_file = json.load(file)
 
-            json_file.append(data_dict)
+            # json_file.append(data_dict)
 
-            with open('RawInputData.json' , 'w') as file:
-                json.dump(json_file , file , indent=4)
+            # with open('RawInputData.json' , 'w') as file:
+            #     json.dump(json_file , file , indent=4)
+
+            self.raw_data.append(data_dict)
             
 
 
@@ -61,8 +65,12 @@ class DataGen():
             self.timestamp +=1
 
             yield data_dict
+        
+        with open('RawInputData.json' , 'w') as file:
+                json.dump(self.raw_data , file , indent=4)
 
 
 
 #for i in data_generation():
     #print(i)
+
